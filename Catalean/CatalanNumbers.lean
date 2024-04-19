@@ -4,7 +4,7 @@ import Mathlib.Data.Finset.NatAntidiagonal
 import Mathlib.Data.Finset.Basic
 import Mathlib.Logic.Equiv.Defs
 
-import «Catalan».FullBinaryTrees
+import «Catalean».FullBinaryTrees
 
 open Nat
 open Finset

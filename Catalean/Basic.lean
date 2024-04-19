@@ -1,6 +1,6 @@
 import Mathlib.Logic.Equiv.Defs
-import «Catalan».FullBinaryTrees
-import «Catalan».PlaneTrees
+import «Catalean».FullBinaryTrees
+import «Catalean».PlaneTrees
 
 section PTofFBT
 open FullBinaryTree
