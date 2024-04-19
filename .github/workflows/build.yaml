@@ -36,6 +36,5 @@ jobs:
           lake exe cache get
         if: ${{ steps.lake-cache.outputs.cache-hit != 'true' }}
       - run: |
-          echo ~/.elan/bin >> $GITHUB_PATH
           cd main
           lake build
