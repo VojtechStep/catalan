@@ -19,4 +19,6 @@ jobs:
           key: lake-files-${{ github.sha }}
           restore-keys: |
             lake-files-${{ github.event.before }}
-      - run: nix develop --ignore-environment --command 'lake exe cache get && lake build'
+      - run: |
+          cd main
+          nix develop --ignore-environment --command 'lake exe cache get && lake build'
