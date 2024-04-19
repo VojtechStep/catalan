@@ -3,3 +3,4 @@
 import «Catalan».PlaneTrees
 import «Catalan».FullBinaryTrees
 import «Catalan».Basic
+import «Catalan».CatalanNumbers
