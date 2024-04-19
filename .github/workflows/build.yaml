@@ -12,13 +12,30 @@ jobs:
       - uses: actions/checkout@v4
         with:
           path: main
-      - uses: cachix/install-nix-action@v26
       - uses: actions/cache@v4
+        id: lake-cache
+        name: Formalization cache
         with:
           path: main/.lake
           key: lake-files-${{ github.sha }}
           restore-keys: |
             lake-files-${{ github.event.before }}
+      - uses: actions/cache@v4
+        id: elan-cache
+        name: Elan cache
+        with:
+          path: ~/.elan
+          key: elan-files
+      - run: |
+          curl https://raw.githubusercontent.com/leanprover/elan/v3.1.1/elan-init.sh -sSf | sh -s -- -y --no-modify-path --default-toolchain $(cat main/lean-toolchain)
+        if: ${{ steps.elan-cache.outputs.cache-hit != 'true' }}
+      - run: |
+          echo ~/.elan/bin >> $GITHUB_PATH
       - run: |
           cd main
-          nix develop --ignore-environment --command 'lake exe cache get && lake build'
+          lake exe cache get
+        if: ${{ steps.lake-cache.outputs.cache-hit != 'true' }}
+      - run: |
+          echo ~/.elan/bin >> $GITHUB_PATH
+          cd main
+          lake build
