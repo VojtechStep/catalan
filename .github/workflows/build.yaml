@@ -1,0 +1,21 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  typecheck:
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: main
+      - uses: cachix/install-nix-action@v26
+      - uses: actions/cache@v4
+        with:
+          path: main/.lake
+          key: lake-files-${{ github.sha }}
+          restore-keys: |
+            lake-files-${{ github.event.before }}
+      - run: nix develop --ignore-environment --command 'lake exe cache get && lake build'
