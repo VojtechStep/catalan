@@ -55,8 +55,22 @@ def equiv_root_binary_tree :
         rw [is_lt]
       done)
 
-def equiv_full_binary_tree_catalan_structure : (n : Nat) ->
-  full_binary_tree_of_node_count (n + 1) ≃ catalan_structure n := by sorry
+def equiv_full_binary_tree_catalan_structure (n : Nat) :
+  full_binary_tree_of_node_count (n + 1) ≃ catalan_structure n := by
+  unfold full_binary_tree_of_node_count
+  unfold catalan_structure
+  apply Equiv.mk
+  . sorry
+  . sorry
+  . intro ⟨ T, num ⟩
+    induction T with
+    | leaf =>
+      exfalso
+      unfold nodes at num
+      sorry
+    | node T1 T2 => sorry
+  . sorry
+
 
 noncomputable def equiv_catalan_structure (n : Nat) :
   catalan_structure n ≃ Fin (catalan_number (n + 1)) := by
