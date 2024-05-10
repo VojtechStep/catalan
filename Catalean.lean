@@ -3,4 +3,5 @@
 import «Catalean».PlaneTrees
 import «Catalean».FullBinaryTrees
 import «Catalean».Basic
+import «Catalean».RotatingIso
 import «Catalean».CatalanNumbers
