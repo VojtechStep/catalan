@@ -71,7 +71,9 @@ def tree_node_initiality (n : Nat) :
     unfold nodes
     rw [add_assoc, p, add_comm])
   ( λ ⟨ T, p ⟩ => by
-    sorry)
+    match T with
+    | leaf => contradiction
+    | node T₁ T₂ => rfl)
   ( λ ⟨ ⟨ T₁, T₂ ⟩, p ⟩ => by rfl)
 
 def peasants_contractibility_of_singletons (n : Nat) :
