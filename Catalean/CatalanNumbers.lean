@@ -39,10 +39,8 @@ def equiv_root_binary_tree :
       | leaf => rfl
       | node T1 T2 _ _ =>
         unfold nodes at n
-        exfalso
         rw [Nat.add_assoc, ← Nat.succ_eq_one_add] at n
-        apply (Nat.not_eq_zero_of_lt (Nat.lt_succ_self _)) at n
-        assumption
+        contradiction
       done)
     ( λ u => by
       simp
@@ -55,31 +53,87 @@ def equiv_root_binary_tree :
         rw [is_lt]
       done)
 
-def equiv_full_binary_tree_catalan_structure (n : Nat) :
-  full_binary_tree_of_node_count (n + 1) ≃ catalan_structure n := by
-  unfold full_binary_tree_of_node_count
-  unfold catalan_structure
-  apply Equiv.mk
-  . sorry
-  . sorry
-  . intro ⟨ T, num ⟩
-    induction T with
-    | leaf =>
-      exfalso
-      unfold nodes at num
-      sorry
-    | node T1 T2 => sorry
-  . sorry
+def tree_node_initiality (n : Nat) :
+  full_binary_tree_of_node_count (n + 1) ≃
+  { X : FullBinaryTree × FullBinaryTree // X.1.nodes + X.2.nodes = n } := Equiv.mk
+  ( λ ⟨ T , p⟩ => match T with
+    | leaf => by contradiction
+    | node T₁ T₂ => by
+      use ⟨ T₁, T₂⟩
+      unfold nodes at p
+      dsimp
+      rw [add_assoc, add_comm] at p
+      apply Nat.succ_inj.mp
+      assumption)
+  ( λ ⟨ ⟨ T₁, T₂ ⟩, p⟩ => by
+    use (node T₁ T₂)
+    dsimp at p
+    unfold nodes
+    rw [add_assoc, p, add_comm])
+  ( λ ⟨ T, p⟩ => by
+    sorry)
+  ( λ ⟨ ⟨ T₁, T₂ ⟩, p⟩ => by rfl)
 
+def peasants_contractibility_of_singletons (n : Nat) :
+  { X : FullBinaryTree × FullBinaryTree // X.1.nodes + X.2.nodes = n } ≃
+  { X : (Fin (n + 1) × FullBinaryTree × FullBinaryTree) //
+    X.2.1.nodes = ↑X.1 ∧ X.2.2.nodes = n - ↑X.1 } := Equiv.mk
+  ( λ ⟨ ⟨ T₁, T₂⟩, p ⟩ => by
+    use ⟨T₁.nodes, T₁, T₂⟩
+    dsimp at *
+    constructor
+    . symm
+      apply Nat.mod_eq_of_lt
+      apply Nat.lt_of_succ_le
+      apply Nat.succ_le_succ
+      rw [← p]
+      apply Nat.le_add_right
+    . sorry)
+  ( by sorry)
+  ( by sorry)
+  ( by sorry)
 
-noncomputable def equiv_catalan_structure (n : Nat) :
-  catalan_structure n ≃ Fin (catalan_number (n + 1)) := by
-  unfold catalan_number
-  unfold catalan_structure
-  apply Equiv.trans
-  . apply Equiv.sigmaCongrRight;
-    . intro i; exact finProdFinEquiv
-  . exact dist_fin_sigma
+def sigma_arith (n : Nat) :
+  { X : (Fin (n + 1) × FullBinaryTree × FullBinaryTree) //
+    X.2.1.nodes = ↑X.1 ∧ X.2.2.nodes = n - ↑X.1 } ≃
+  ( (i : Fin (n + 1)) ×
+    full_binary_tree_of_node_count i ×
+    full_binary_tree_of_node_count (n - i)) := Equiv.mk
+  ( λ ⟨ ⟨ i, T₁, T₂ ⟩, p, q ⟩ => ⟨ i , ⟨ T₁, p⟩, ⟨T₂, q⟩⟩)
+  ( λ ⟨ i, ⟨ T₁, p⟩, ⟨ T₂, q⟩⟩ => ⟨ ⟨ i, T₁, T₂⟩, p, q⟩)
+  ( λ ⟨ _, _, _ ⟩ => by rfl)
+  ( λ ⟨ _, _, _ ⟩ => by rfl)
+
+mutual
+  noncomputable def equiv_full_binary_tree_catalan_structure (n : Nat) :
+    full_binary_tree_of_node_count (n + 1) ≃ catalan_structure n := by
+    unfold full_binary_tree_of_node_count
+    unfold catalan_structure
+    apply Equiv.mk
+    . sorry
+    . sorry
+    . intro ⟨ T, num ⟩
+      induction T with
+      | leaf =>
+        exfalso
+        unfold nodes at num
+        symm at num
+        apply (Nat.not_eq_zero_of_lt (Nat.lt_succ_self _)) at num
+        assumption
+      | node T1 T2 H1 H2 =>
+        unfold nodes at num
+        sorry
+    . sorry
+
+  noncomputable def equiv_catalan_structure (n : Nat) :
+    catalan_structure n ≃ Fin (catalan_number (n + 1)) := by
+    unfold catalan_number
+    unfold catalan_structure
+    apply Equiv.trans
+    . apply Equiv.sigmaCongrRight;
+      . intro i; exact finProdFinEquiv
+    . exact dist_fin_sigma
+end
 
 noncomputable def compute_support_full_binary_tree : (n : Nat) ->
   full_binary_tree_of_node_count n ≃ Fin (catalan_number n)
