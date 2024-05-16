@@ -94,9 +94,20 @@ def peasants_contractibility_of_singletons (n : Nat) :
     . rw [e]
       symm; apply Nat.sub_eq_of_eq_add; symm
       rw [add_comm, p])
-  ( by sorry)
-  ( by sorry)
-  ( by sorry)
+  ( λ ⟨ ⟨ ⟨i, h⟩, T₁, T₂⟩, p, q⟩ => by
+    use ⟨T₁, T₂⟩
+    dsimp at *
+    rw [p, q]
+    rw [Nat.add_comm, Nat.sub_add_cancel]
+    apply Nat.lt_add_one_iff.1
+    apply h)
+  ( λ ⟨ ⟨ T₁, T₂⟩, p ⟩ => by dsimp)
+  (λ ⟨ ⟨ ⟨i, h⟩, T₁, T₂⟩, p, q⟩ => by
+    repeat simp at *
+    rw [p]
+    unfold
+
+    sorry)
 
 def sigma_arith (n : Nat) :
   { X : (Fin (n + 1) × FullBinaryTree × FullBinaryTree) //
