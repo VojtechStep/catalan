@@ -22,7 +22,7 @@ def catalan_number : Nat → Nat
 | 0 => 1
 | succ n => ∑ i : Fin (succ n), (catalan_number i) * (catalan_number (n - i))
 
-lemma sigmaOptionEquivSum {α : Type u} {β : Option α → Type v} :
+def sigmaOptionEquivSum {α : Type u} {β : Option α → Type v} :
   (a : Option α) × β a ≃ β none ⊕ (a : α) × β (some a) where
   toFun := λ
   | ⟨none, b⟩ => Sum.inl b
@@ -37,7 +37,7 @@ lemma sigmaOptionEquivSum {α : Type u} {β : Option α → Type v} :
   | Sum.inl _ => by rfl
   | Sum.inr _ => by rfl
 
-lemma dist_fin_sigma {k : Nat} {n : Fin k → Nat} :
+def dist_fin_sigma {k : Nat} {n : Fin k → Nat} :
   (i : Fin k) × Fin (n i) ≃ Fin (∑ i : Fin k, n i) := by
   induction k with
   | zero => dsimp; apply Equiv.equivOfIsEmpty
@@ -162,7 +162,7 @@ def sigma_arith (n : Nat) :
   ( λ ⟨ _, _, _ ⟩ => by rfl)
   ( λ ⟨ _, _, _ ⟩ => by rfl)
 
-noncomputable def equiv_catalan_structure (n : Nat) :
+def equiv_catalan_structure (n : Nat) :
   catalan_structure n ≃ Fin (catalan_number (n + 1)) := by
   unfold catalan_number
   unfold catalan_structure
@@ -171,7 +171,7 @@ noncomputable def equiv_catalan_structure (n : Nat) :
     . intro i; exact finProdFinEquiv
   . exact dist_fin_sigma
 
-noncomputable def compute_support_full_binary_tree : (n : Nat) ->
+def compute_support_full_binary_tree : (n : Nat) ->
   full_binary_tree_of_node_count n ≃ Fin (catalan_number n)
 | 0 => equiv_root_binary_tree
 | succ n' => by

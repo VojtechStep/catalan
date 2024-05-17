@@ -16,6 +16,8 @@ import «Catalean».RotatingIso
 
 --- Larger tasks
 
+-- Distributivity of Fin and Sigma
+#check dist_fin_sigma
 -- Recursively counting Fin Cₙ
 #check equiv_catalan_structure
 -- Counting full binary trees

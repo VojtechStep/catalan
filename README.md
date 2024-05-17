@@ -13,7 +13,8 @@ Formalized small tasks:
 - 4. full binary trees with `n` nodes
 
 Formalized larger tasks:
-- 1. TODO
-- 2. TODO
-- 3. characterization of plane trees as a least fixed point of List
-- 4. construction of the rotating isomorphism
+- 1. distributivity of `Fin` and `Sigma`
+- 2. counting Catalan numbers with `Fin`
+- 3. counting full binary trees with `Cₙ` nodes
+- 4. characterization of plane trees as a least fixed point of List
+- 5. construction of the rotating isomorphism
