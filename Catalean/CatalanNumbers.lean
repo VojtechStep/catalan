@@ -7,7 +7,7 @@ import Mathlib.Data.Nat.Order.Basic
 import Mathlib.Logic.Equiv.Fin
 import Mathlib.Logic.Equiv.Functor
 import Mathlib.Logic.Equiv.Defs
-import Mathlib.Tactic.Ring
+import Mathlib.Tactic
 
 import «Catalean».FullBinaryTrees
 
@@ -22,18 +22,44 @@ def catalan_number : Nat → Nat
 | 0 => 1
 | succ n => ∑ i : Fin (succ n), (catalan_number i) * (catalan_number (n - i))
 
+lemma sigmaOptionEquivSum {α : Type u} {β : Option α → Type v} :
+  (a : Option α) × β a ≃ β none ⊕ (a : α) × β (some a) where
+  toFun := λ
+  | ⟨none, b⟩ => Sum.inl b
+  | ⟨some a, b⟩ => Sum.inr ⟨a, b⟩
+  invFun := λ
+  | Sum.inl b => ⟨none, b⟩
+  | Sum.inr ⟨a, b⟩ => ⟨a, b⟩
+  left_inv := λ
+  | ⟨none, _⟩ => by rfl
+  | ⟨some _, _⟩ => by rfl
+  right_inv := λ
+  | Sum.inl _ => by rfl
+  | Sum.inr _ => by rfl
+
 lemma dist_fin_sigma {k : Nat} {n : Fin k → Nat} :
   (i : Fin k) × Fin (n i) ≃ Fin (∑ i : Fin k, n i) := by
   induction k with
   | zero => dsimp; apply Equiv.equivOfIsEmpty
-  | succ k =>
+  | succ k H =>
     apply Equiv.trans
-    sorry
+    apply Equiv.sigmaCongr (β₂ := ?mot) ?base ?fiber
+    case mot =>
+      exact λ o => Fin (n (match o with | none => k | some i => Fin.castSucc i))
+    case base => exact finSuccEquivLast
+    case fiber =>
+      apply Fin.lastCases
+      . simp; apply Equiv.refl
+      . intro i; simp; apply Equiv.refl
     apply Equiv.trans
-    -- TODO: apply Bifunctor.mapEquiv after filling the above sorry
+    refine sigmaOptionEquivSum
+    simp
+    apply Equiv.trans
+    apply Equiv.sumComm
+    apply Equiv.trans
     exact
       (Bifunctor.mapEquiv Sum
-        ( @dist_fin_sigma k (λ i => n (Fin.castSucc i)))
+        ( @H (n ·.castSucc))
         ( Equiv.refl (Fin (n (Fin.last k)))))
     apply Equiv.trans
     apply finSumFinEquiv
@@ -57,17 +83,16 @@ def equiv_root_binary_tree :
       | leaf => rfl
       | node T1 T2 _ _ =>
         unfold nodes at n
-        rw [Nat.add_assoc, ← Nat.succ_eq_one_add] at n
-        contradiction
+        exfalso
+        linarith
       done)
     ( λ u => by
       simp
       induction u with
       | mk val is_lt =>
-        apply Fin.eq_of_val_eq
         unfold catalan_number at is_lt
-        simp at is_lt
-        simp
+        apply Fin.eq_of_val_eq
+        simp at *
         rw [is_lt]
       done)
 
