@@ -105,9 +105,8 @@ def peasants_contractibility_of_singletons (n : Nat) :
   (λ ⟨ ⟨ ⟨i, h⟩, T₁, T₂⟩, p, q⟩ => by
     repeat simp at *
     rw [p]
-    unfold
-
-    sorry)
+    apply Fin.eq_of_val_eq
+    apply Nat.mod_eq_of_lt h)
 
 def sigma_arith (n : Nat) :
   { X : (Fin (n + 1) × FullBinaryTree × FullBinaryTree) //
