@@ -1,8 +1,11 @@
 import Mathlib.Algebra.BigOperators.Fin
 import Mathlib.Algebra.BigOperators.NatAntidiagonal
+import Mathlib.Control.Bifunctor
 import Mathlib.Data.Finset.NatAntidiagonal
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Nat.Order.Basic
+import Mathlib.Logic.Equiv.Fin
+import Mathlib.Logic.Equiv.Functor
 import Mathlib.Logic.Equiv.Defs
 import Mathlib.Tactic.Ring
 
@@ -21,7 +24,22 @@ def catalan_number : Nat → Nat
 
 lemma dist_fin_sigma {k : Nat} {n : Fin k → Nat} :
   (i : Fin k) × Fin (n i) ≃ Fin (∑ i : Fin k, n i) := by
-  sorry
+  induction k with
+  | zero => dsimp; apply Equiv.equivOfIsEmpty
+  | succ k =>
+    apply Equiv.trans
+    sorry
+    apply Equiv.trans
+    -- TODO: apply Bifunctor.mapEquiv after filling the above sorry
+    exact
+      (Bifunctor.mapEquiv Sum
+        ( @dist_fin_sigma k (λ i => n (Fin.castSucc i)))
+        ( Equiv.refl (Fin (n (Fin.last k)))))
+    apply Equiv.trans
+    apply finSumFinEquiv
+    apply finCongr
+    symm
+    apply Fin.sum_univ_castSucc
 
 def full_binary_tree_of_node_count (n : Nat) : Type :=
   { T : FullBinaryTree // T.nodes = n}
