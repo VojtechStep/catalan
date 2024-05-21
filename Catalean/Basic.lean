@@ -1,3 +1,4 @@
+import «Catalean».BallotSequences
 import «Catalean».CatalanNumbers
 import «Catalean».FullBinaryTrees
 import «Catalean».PlaneTrees
@@ -13,6 +14,8 @@ import «Catalean».RotatingIso
 #check FullBinaryTree
 -- Full binary trees with N nodes
 #check full_binary_tree_of_node_count
+-- Ballot sequences of length N
+#check ballot_sequence_of_length
 
 --- Larger tasks
 

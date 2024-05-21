@@ -11,6 +11,7 @@ Formalized small tasks:
 - 2. definition of plane trees
 - 3. definition of full binary trees
 - 4. full binary trees with `n` nodes
+- 5. ballot sequences of length `n`
 
 Formalized larger tasks:
 - 1. distributivity of `Fin` and `Sigma`
