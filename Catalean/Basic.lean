@@ -1,3 +1,4 @@
+import «Catalean».BallotSequences
 import «Catalean».CatalanNumbers
 import «Catalean».FullBinaryTrees
 import «Catalean».PlaneTrees
@@ -13,9 +14,13 @@ import «Catalean».RotatingIso
 #check FullBinaryTree
 -- Full binary trees with N nodes
 #check full_binary_tree_of_node_count
+-- Ballot sequences of length N
+#check ballot_sequence_of_length
 
 --- Larger tasks
 
+-- Distributivity of Fin and Sigma
+#check dist_fin_sigma
 -- Recursively counting Fin Cₙ
 #check equiv_catalan_structure
 -- Counting full binary trees
